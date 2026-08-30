@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Симулятор автономеров (без повторов)</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(circle, #1e1e24 0%, #111115 100%);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+            letter-spacing: 1px;
+        }
+
+        /* Счетчик уникальных номеров */
+        .counter {
+            font-size: 1.1rem;
+            color: #aaa;
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .plate-container {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .car-plate {
+            background-color: #fcfcfc;
+            color: #111;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            width: 450px;
+            height: 95px;
+            border: 4px solid #111;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            box-sizing: border-box;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 10px 20px rgba(0,0,0,0.3);
+            position: relative;
+            user-select: none;
+            transition: transform 0.1s ease;
+        }
+
+        .plate-main {
+            font-size: 70px;
+            letter-spacing: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .plate-region-box {
+            border-left: 4px solid #111;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 85px;
+            padding-left: 10px;
+            box-sizing: border-box;
+        }
+
+        .region-number {
+            font-size: 45px;
+            line-height: 45px;
+            margin-bottom: 2px;
+        }
+
+        .rus-section {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .rus-text {
+            font-size: 16px;
+            font-family: sans-serif;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+        }
+
+        .flag {
+            width: 22px;
+            height: 14px;
+            position: relative;
+            border: 1px solid #ccc;
+        }
+
+        .flag::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 66%;
+            background: #fff;
+        }
+        .flag::after {
+            content: '';
+            position: absolute;
+            top: 33%; left: 0; right: 0; bottom: 33%;
+            background: #0039a6;
+        }
+        .flag-red {
+            position: absolute;
+            top: 66%; left: 0; right: 0; bottom: 0;
+            background: #d52b1e;
+        }
+
+        .spin-btn {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 75, 43, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .spin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 75, 43, 0.6);
+        }
+
+        .spin-btn:active {
+            transform: translateY(1px);
+        }
+
+        .spin-btn:disabled {
+            background: #555;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .shake {
+            animation: shakeAnim 0.15s infinite;
+        }
+
+        @keyframes shakeAnim {
+            0% { transform: translate(2px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(0px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(2px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(2px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎰 Испытай удачу!</h1>
+    <!-- Текст со счетчиком -->
+    <div class="counter" id="counterText">Выбито уникальных номеров: 0</div>
+
+    <div class="plate-container">
+        <div class="car-plate" id="plate">
+            <div class="plate-main" id="plateMain">А000АА</div>
+            <div class="plate-region-box">
+                <div class="region-number" id="plateRegion">777</div>
+                <div class="rus-section">
+                    <span class="rus-text">RUS</span>
+                    <div class="flag"><div class="flag-red"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="spin-btn" id="spinButton" onclick="generatePlate()">Выбить номер</button>
+
+    <script>
+        const allowedLetters = ['А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'];
+        const regions = ['777', '999', '197', '77', '99', '163', '78', '178', '98', '23', '93', '123'];
+
+        // Сюда будут сохраняться все выпавшие номера в формате "А123АА777"
+        const usedPlates = new Set(); 
+
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function generatePlate() {
+            const plate = document.getElementById('plate');
+            const plateMain = document.getElementById('plateMain');
+            const plateRegion = document.getElementById('plateRegion');
+            const spinButton = document.getElementById('spinButton');
+            const counterText = document.getElementById('counterText');
+
+            // Блокируем кнопку на время анимации
+            spinButton.disabled = true;
+            plate.classList.add('shake');
+
+            setTimeout(() => {
+                plate.classList.remove('shake');
+                spinButton.disabled = false;
+
+                let fullPlateCode = '';
+                let letter1, letter2, letter3, digits, randomRegion;
+                let attempts = 0;
+                const maxAttempts = 1000; // Защита от бесконечного цикла, если комбинации закончатся
+
+                // Цикл do-while: генерирует номер заново, если он уже есть в Set
+                do {
+                    letter1 = getRandomElement(allowedLetters);
+                    letter2 = getRandomElement(allowedLetters);
+                    letter3 = getRandomElement(allowedLetters);
+                    
+                    let luck = Math.random();
+                    if (luck > 0.85) {
+                        const singleDigit = Math.floor(Math.random() * 10);
+                        digits = `${singleDigit}${singleDigit}${singleDigit}`;
+                    } else if (luck > 0.70) {
+                        const d1 = Math.floor(Math.random() * 9) + 1;
+                        const d2 = Math.floor(Math.random() * 10);
+                        digits = `${d1}${d2}${d1}`;
+                    } else {
+                        digits = String(Math.floor(Math.random() * 900) + 100);
+                    }
+
+                    randomRegion = getRandomElement(regions);
+                    
+                    // Собираем полную строчку для проверки (например: "К777ОХ197")
+                    fullPlateCode = `${letter1}${digits}${letter2}${letter3}${randomRegion}`;
+                    attempts++;
+
+                } while (usedPlates.has(fullPlateCode) && attempts < maxAttempts);
+
+                // Добавляем новый уникальный номер в нашу базу данных на клиенте
+                usedPlates.add(fullPlateCode);
+
+                // Обновляем текст на странице
+                plateMain.textContent = `${letter1}${digits}${letter2}${letter3}`;
+                plateRegion.textContent = randomRegion;
+                counterText.textContent = `Выбито уникальных номеров: ${usedPlates.size}`;
+
+            }, 400);
+        }
+    </script>
+</body>
+</html>
