@@ -8,31 +8,65 @@
 </head>
 <body>
 
-    <!-- Главное название проекта -->
-    <div class="brand-title">NOMER DROP</div>
-    
-    <div class="controls-container">
-        <div class="counter" id="counterText">Выбито уникальных номеров: 0</div>
-        <div class="region-input-box">
-            <label for="customRegion">Регион:</label>
-            <input type="text" id="customRegion" maxlength="3" placeholder="77">
-        </div>
-    </div>
+    <!-- Шапка с названием и навигацией -->
+    <header>
+        <div class="brand-title">NOMER DROP</div>
+        <nav class="navigation">
+            <button class="nav-btn active" data-tab="tab-drop">Кейс</button>
+            <button class="nav-btn" data-tab="tab-inventory">Инвентарь (<span id="invCount">0</span>)</button>
+            <button class="nav-btn" data-tab="tab-history">История</button>
+        </nav>
+    </header>
 
-    <div class="plate-container">
-        <div class="car-plate" id="plate">
-            <div class="plate-main" id="plateMain">А000АА</div>
-            <div class="plate-region-box">
-                <div class="region-number" id="plateRegion">77</div>
-                <div class="rus-section">
-                    <span class="rus-text">RUS</span>
-                    <div class="flag"><div class="flag-red"></div></div>
+    <main class="content">
+        <!-- ВКЛАДКА 1: КРУТИЛКА (DROP) -->
+        <section id="tab-drop" class="tab-content active">
+            <div class="controls-container">
+                <div class="counter" id="counterText">Выбито уникальных номеров: 0</div>
+                <div class="region-input-box">
+                    <label for="customRegion">Регион:</label>
+                    <input type="text" id="customRegion" maxlength="3" placeholder="77">
                 </div>
             </div>
-        </div>
-    </div>
 
-    <button class="spin-btn" id="spinButton">Выбить номер</button>
+            <div class="plate-container">
+                <div class="car-plate" id="plate">
+                    <div class="plate-main" id="plateMain">А000АА</div>
+                    <div class="plate-region-box">
+                        <div class="region-number" id="plateRegion">77</div>
+                        <div class="rus-section">
+                            <span class="rus-text">RUS</span>
+                            <div class="flag"><div class="flag-red"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Блок действий после выпадения номера -->
+            <div class="action-zone">
+                <button class="spin-btn" id="spinButton">Выбить номер</button>
+                <button class="action-btn accept-btn hidden" id="acceptButton">Забрать в инвентарь</button>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА 2: ИНВЕНТАРЬ -->
+        <section id="tab-inventory" class="tab-content">
+            <h2>Ваш гараж (Инвентарь)</h2>
+            <div class="plates-grid" id="inventoryGrid">
+                <!-- Сюда скрипт добавит сохраненные номера -->
+                <p class="empty-msg">В инвентаре пока пусто. Выбейте номер и заберите его!</p>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА 3: ИСТОРИЯ -->
+        <section id="tab-history" class="tab-content">
+            <h2>История дропов (Последние 20)</h2>
+            <div class="history-list" id="historyList">
+                <!-- Сюда скрипт запишет историю -->
+                <p class="empty-msg">История пуста. Нажмите «Выбить номер».</p>
+            </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
