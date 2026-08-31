@@ -8,11 +8,15 @@
 </head>
 <body>
 
-    <!-- Шапка с балансом и навигацией -->
+    <!-- Фиксированный виджет баланса в правом нижнем углу -->
+    <div class="fixed-balance">
+        👛 Баланс: <span id="balanceText">100</span>$
+    </div>
+
+    <!-- Шапка сайта -->
     <header>
         <div class="header-top">
             <div class="brand-title">NOMER DROP</div>
-            <div class="balance-box">Баланс: <span id="balanceText">100</span>$</div>
         </div>
         <nav class="navigation">
             <button class="nav-btn active" data-tab="tab-drop">Кейс (10$)</button>
@@ -25,7 +29,7 @@
         <!-- ВКЛАДКА 1: КРУТИЛКА (DROP) -->
         <section id="tab-drop" class="tab-content active">
             <div class="controls-container">
-                <div class="counter" id="counterText">Всего попыток: 0</div>
+                <div class="counter" id="counterText">Выбито уникальных номеров: 0</div>
                 <div class="region-input-box">
                     <label for="customRegion">Регион:</label>
                     <input type="text" id="customRegion" maxlength="3" placeholder="77">
@@ -43,7 +47,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Информационная плашка о редкости выпавшего номера -->
                 <div class="rarity-badge hidden" id="rarityBadge">Обычный</div>
             </div>
 
