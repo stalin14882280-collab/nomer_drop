@@ -19,19 +19,40 @@ header {
     box-sizing: border-box;
 }
 
+.header-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 .brand-title {
     font-size: 3rem;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 4px;
-    margin-bottom: 20px;
     background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 0 0 20px rgba(255, 75, 43, 0.3);
 }
 
-/* Навигационная панель */
+/* Окно баланса */
+.balance-box {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.balance-box span {
+    color: #38ef7d;
+}
+
 .navigation {
     display: flex;
     gap: 10px;
@@ -64,7 +85,6 @@ header {
     box-shadow: 0 4px 15px rgba(255, 75, 43, 0.3);
 }
 
-/* Контент переключения вкладок */
 .content {
     width: 100%;
     max-width: 800px;
@@ -98,7 +118,6 @@ h2 {
     margin-top: 30px;
 }
 
-/* Элементы управления на главной */
 .controls-container {
     display: flex;
     gap: 20px;
@@ -145,6 +164,10 @@ h2 {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 30px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .car-plate {
@@ -164,182 +187,109 @@ h2 {
     box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 10px 20px rgba(0,0,0,0.3);
 }
 
-/* Мини-номера для списков (инвентарь / история) */
+/* Плашка редкости под номером */
+.rarity-badge {
+    margin-top: 15px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Цветовые стили редкости */
+.rare-common { background: #555; color: #fff; }
+.rare-mirror { background: #007bff; color: #fff; box-shadow: 0 0 10px rgba(0,123,255,0.5); }
+.rare-triple { background: #ffc107; color: #111; box-shadow: 0 0 15px rgba(255,193,7,0.6); }
+
+/* Карточка товара в инвентаре */
+.inventory-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Кнопка продажи */
+.sell-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #f857a6 0%, #ff5858 100%);
+    color: white;
+    border: none;
+    padding: 8px 0;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.sell-btn:hover {
+    transform: scale(1.03);
+}
+
+/* Копии для списков */
 .car-plate.mini {
     width: 220px;
     height: 48px;
     border: 2px solid #111;
     border-radius: 6px;
     padding: 0 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-.car-plate.mini .plate-main {
-    font-size: 34px;
-    letter-spacing: 1px;
-}
+.car-plate.mini .plate-main { font-size: 34px; letter-spacing: 1px; }
+.car-plate.mini .plate-region-box { border-left: 2px solid #111; width: 45px; padding-left: 4px; }
+.car-plate.mini .region-number { font-size: 22px; line-height: 22px; }
+.car-plate.mini .rus-text { font-size: 8px; }
+.car-plate.mini .flag { width: 12px; height: 8px; }
 
-.car-plate.mini .plate-region-box {
-    border-left: 2px solid #111;
-    width: 45px;
-    padding-left: 4px;
-}
-
-.car-plate.mini .region-number {
-    font-size: 22px;
-    line-height: 22px;
-}
-
-.car-plate.mini .rus-section {
-    gap: 2px;
-}
-
-.car-plate.mini .rus-text {
-    font-size: 8px;
-}
-
-.car-plate.mini .flag {
-    width: 12px;
-    height: 8px;
-}
-
-.plate-main {
-    font-size: 70px;
-    letter-spacing: 5px;
-}
-
+.plate-main { font-size: 70px; letter-spacing: 5px; }
 .plate-region-box {
-    border-left: 4px solid #111;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 85px;
-    padding-left: 10px;
-    box-sizing: border-box;
+    border-left: 4px solid #111; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 85px; padding-left: 10px; box-sizing: border-box;
 }
-
-.region-number {
-    font-size: 45px;
-    line-height: 45px;
-    margin-bottom: 2px;
-}
-
-.rus-section {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.rus-text {
-    font-size: 16px;
-    font-family: sans-serif;
-    font-weight: 900;
-}
-
-.flag {
-    width: 22px;
-    height: 14px;
-    position: relative;
-    border: 1px solid #ccc;
-}
-
+.region-number { font-size: 45px; line-height: 45px; margin-bottom: 2px; }
+.rus-section { display: flex; align-items: center; gap: 5px; }
+.rus-text { font-size: 16px; font-family: sans-serif; font-weight: 900; }
+.flag { width: 22px; height: 14px; position: relative; border: 1px solid #ccc; }
 .flag::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 66%; background: #fff; }
 .flag::after { content: ''; position: absolute; top: 33%; left: 0; right: 0; bottom: 33%; background: #0039a6; }
 .flag-red { position: absolute; top: 66%; left: 0; right: 0; bottom: 0; background: #d52b1e; }
 
-/* Зона кнопок управления дропом */
-.action-zone {
-    display: flex;
-    gap: 15px;
-}
+.action-zone { display: flex; gap: 15px; }
 
 .spin-btn {
     background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
-    color: white;
-    border: none;
-    padding: 18px 45px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 10px 25px rgba(255, 75, 43, 0.4);
-    transition: all 0.3s ease;
+    color: white; border: none; padding: 18px 45px; font-size: 1.2rem; font-weight: bold;
+    border-radius: 50px; cursor: pointer; box-shadow: 0 10px 25px rgba(255, 75, 43, 0.4);
     text-transform: uppercase;
 }
+.spin-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(255, 75, 43, 0.6); }
+.spin-btn:disabled { background: #555; box-shadow: none; cursor: not-allowed; }
 
-.spin-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 30px rgba(255, 75, 43, 0.6);
-}
+.action-btn { border: none; padding: 18px 35px; font-size: 1.1rem; font-weight: bold; border-radius: 50px; cursor: pointer; }
+.accept-btn { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
 
-.action-btn {
-    border: none;
-    padding: 18px 35px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+.hidden { display: none !important; }
 
-.accept-btn {
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-    color: white;
-    box-shadow: 0 10px 25px rgba(56, 239, 125, 0.3);
-}
-
-.accept-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 30px rgba(56, 239, 125, 0.5);
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* Сетки и списки для истории/инвентаря */
-.plates-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    width: 100%;
-}
-
-.history-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-    max-width: 500px;
-}
-
+.plates-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; width: 100%; }
+.history-list { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 500px; }
 .history-item {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 12px 20px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03); padding: 12px 20px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255, 255, 255, 0.05);
 }
+.history-time { color: #666; font-size: 0.9rem; }
 
-.history-time {
-    color: #666;
-    font-size: 0.9rem;
-}
-
-/* Анимация тряски */
 .shake { animation: shakeAnim 0.15s infinite; }
 @keyframes shakeAnim {
     0% { transform: translate(2px, 1px) rotate(0deg); }
     10% { transform: translate(-1px, -2px) rotate(-1deg); }
     20% { transform: translate(-3px, 0px) rotate(1deg); }
     30% { transform: translate(0px, 2px) rotate(0deg); }
-    45% { transform: translate(1px, -1px) rotate(1deg); }
-    60% { transform: translate(-3px, 1px) rotate(0deg); }
-    80% { transform: translate(-1px, -1px) rotate(1deg); }
     100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
