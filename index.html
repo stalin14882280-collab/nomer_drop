@@ -21,7 +21,7 @@
             <div class="brand-title">NOMER DROP</div>
         </div>
         <nav class="navigation">
-            <button class="nav-btn active" data-tab="tab-drop" id="navDropBtn">Кейс (10$)</button>
+            <button class="nav-btn active" data-tab="tab-drop" id="navDropBtn">Кейс</button>
             <button class="nav-btn" data-tab="tab-inventory">Инвентарь (<span id="invCount">0</span>)</button>
             <button class="nav-btn" data-tab="tab-history">История</button>
         </nav>
@@ -31,7 +31,7 @@
         <!-- ВКЛАДКА 1: КРУТИЛКА (DROP) -->
         <section id="tab-drop" class="tab-content active">
             
-            <!-- Расширенная панель настройки подбора (по отдельности) -->
+            <!-- Панель настройки подбора элементов -->
             <div class="controls-container">
                 <div class="filter-group">
                     <label>Буква 1:</label>
@@ -51,6 +51,7 @@
                 </div>
             </div>
 
+            <!-- Номерной знак -->
             <div class="plate-container">
                 <div class="car-plate" id="plate">
                     <div class="plate-main" id="plateMain">А000АА</div>
@@ -65,11 +66,13 @@
                 <div class="rarity-badge hidden" id="rarityBadge">Обычный</div>
             </div>
 
+            <!-- Раздельные кнопки управления дропом -->
             <div class="action-zone">
-                <button class="spin-btn" id="spinButton">Выбить за 10$</button>
+                <button class="spin-btn" id="spinLettersBtn">Купить буквы (10$)</button>
+                <button class="spin-btn" id="spinDigitsBtn">Купить цифры (10$)</button>
                 <button class="action-btn accept-btn hidden" id="acceptButton">Забрать в инвентарь</button>
             </div>
-            <div class="counter-total" id="counterText">Выбито номеров: 0</div>
+            <div class="counter-total" id="counterText">Выбито уникальных номеров: 0</div>
         </section>
 
         <!-- ВКЛАДКА 2: ИНВЕНТАРЬ -->
