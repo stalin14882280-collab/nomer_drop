@@ -22,7 +22,7 @@ header {
 .header-top {
     width: 100%;
     display: flex;
-    justify-content: center; /* Центрируем заголовок, так как баланс уехал */
+    justify-content: center;
     align-items: center;
     margin-bottom: 20px;
 }
@@ -38,26 +38,45 @@ header {
     text-shadow: 0 0 20px rgba(255, 75, 43, 0.3);
 }
 
-/* Новые стили для плавающего баланса внизу справа */
+/* Обновленный плавающий виджет инфо-панели */
 .fixed-balance {
     position: fixed;
     bottom: 25px;
     right: 25px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    background: rgba(17, 17, 21, 0.85);
-    padding: 12px 24px;
-    border-radius: 50px;
+    background: rgba(17, 17, 21, 0.9);
+    padding: 15px 25px;
+    border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px);
-    z-index: 1000; /* Чтобы баланс всегда был надо всеми окнами */
-    transition: all 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
-.fixed-balance span {
+.wallet-line {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+.wallet-line span {
     color: #38ef7d;
     text-shadow: 0 0 10px rgba(56, 239, 125, 0.3);
+}
+
+.rating-line {
+    font-size: 1rem;
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.spam-line {
+    font-size: 0.85rem;
+    color: #aaa;
+}
+.spam-line.danger {
+    color: #ff4b2b;
+    font-weight: bold;
 }
 
 .navigation {
@@ -125,43 +144,61 @@ h2 {
     margin-top: 30px;
 }
 
+/* Модернизированный блок фильтров подбора */
 .controls-container {
     display: flex;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
     align-items: center;
     margin-bottom: 25px;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 10px 20px;
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 15px 25px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.counter {
-    font-size: 1.1rem;
-    color: #aaa;
-}
-
-.region-input-box {
+.filter-group {
     display: flex;
+    flex-direction: column;
+    gap: 5px;
     align-items: center;
-    gap: 10px;
-    font-size: 1.1rem;
-    color: #aaa;
+    font-size: 0.85rem;
+    color: #888;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-.region-input-box input {
-    width: 60px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    padding: 5px 8px;
+.filter-group input {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 8px;
     color: #fff;
     font-size: 1.1rem;
     font-weight: bold;
     text-align: center;
     outline: none;
+    text-transform: uppercase;
+    transition: all 0.3s;
 }
 
+.filter-group input:focus {
+    border-color: #ff4b2b;
+    box-shadow: 0 0 8px rgba(255, 75, 43, 0.3);
+}
+
+.letter-input { width: 45px; }
+.letter-input.wide { width: 65px; }
+.digits-input { width: 65px; }
+
+.counter-total {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Номерной знак */
 .plate-container {
     background: rgba(255, 255, 255, 0.03);
     padding: 30px;
