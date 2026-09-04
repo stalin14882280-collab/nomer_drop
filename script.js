@@ -16,7 +16,6 @@ let lastGeneratedPlate = null;
 const plate = document.getElementById('plate');
 const plateMain = document.getElementById('plateMain');
 const plateRegion = document.getElementById('plateRegion');
-const spinButton = document.getElementById('spinButton');
 const acceptButton = document.getElementById('acceptButton');
 const counterText = document.getElementById('counterText');
 const invCountText = document.getElementById('invCount');
@@ -28,6 +27,7 @@ const spamCountText = document.getElementById('spamCountText');
 const spamLine = document.getElementById('spamLine');
 const navDropBtn = document.getElementById('navDropBtn');
 
+// Элементы ввода фильтров
 const filterL1 = document.getElementById('filterL1');
 const filterDigits = document.getElementById('filterDigits');
 const filterL23 = document.getElementById('filterL23');
@@ -85,7 +85,8 @@ function createMiniPlateHTML(main, region) {
         </div>
     `;
 }
-function generatePlate() {
+// Главная функция генерации (mode: 'letters' или 'digits')
+function generatePlate(mode) {
     if (balance < currentSpinCost) {
         alert(`Недостаточно денег! Нужно ${currentSpinCost}$.`);
         return;
@@ -94,14 +95,17 @@ function generatePlate() {
     balance -= currentSpinCost;
     balanceText.textContent = balance;
 
-    spinButton.disabled = true;
+    // Блокируем кнопки во время анимации
+    document.getElementById('spinLettersBtn').disabled = true;
+    document.getElementById('spinDigitsBtn').disabled = true;
     acceptButton.classList.add('hidden');
     rarityBadge.classList.add('hidden');
     plate.classList.add('shake');
 
     setTimeout(() => {
         plate.classList.remove('shake');
-        spinButton.disabled = false;
+        document.getElementById('spinLettersBtn').disabled = false;
+        document.getElementById('spinDigitsBtn').disabled = false;
 
         let fullPlateCode = '';
         let letter1, letter2, letter3, digits, selectedRegion;
@@ -115,49 +119,45 @@ function generatePlate() {
         const userRegion = customRegionInput.value.trim();
         
         do {
-            letter1 = userL1 !== '' ? userL1 : getRandomElement(ALLOWED_LETTERS);
-
-            if (userL23.length === 2) {
-                letter2 = userL23;
-                letter3 = userL23;
-            } else if (userL23.length === 1) {
-                letter2 = userL23;
-                letter3 = getRandomElement(ALLOWED_LETTERS);
-            } else {
+            // ЛОГИКА ДЛЯ РЕЖИМА "КРУТИТЬ БУКВЫ"
+            if (mode === 'letters') {
+                letter1 = getRandomElement(ALLOWED_LETTERS);
                 letter2 = getRandomElement(ALLOWED_LETTERS);
                 letter3 = getRandomElement(ALLOWED_LETTERS);
-            }
-
-            if (userDigits !== '') {
-                digits = userDigits.padStart(3, '0');
-                if (digits === digits[0] && digits[1] === digits[0] && digits[2] === digits[0]) {
-                    type = 'triple';
-                    price = 50;
-                } else if (digits[0] === digits[2]) {
-                    type = 'mirror';
-                    price = 15;
-                } else {
-                    type = 'common';
-                    price = 3;
-                }
-            } else {
+                // Цифры фиксируем из инпута (если пусто — ставим 000)
+                digits = userDigits !== '' ? userDigits.padStart(3, '0') : '000';
+            } 
+            // ЛОГИКА ДЛЯ РЕЖИМА "КРУТИТЬ ЦИФРЫ"
+            else if (mode === 'digits') {
+                // Буквы фиксируем из инпута (если пусто — ставим дефолт 'А' и 'АА')
+                letter1 = userL1 !== '' ? userL1 : 'А';
+                letter2 = userL23.length >= 1 ? userL23[0] : 'А';
+                letter3 = userL23.length === 2 ? userL23[1] : 'А';
+                
+                // Цифры крутим рандомно со старой проверкой на редкость
                 let luck = Math.random();
                 if (luck > 0.85) {
                     const singleDigit = Math.floor(Math.random() * 10);
                     digits = `${singleDigit}${singleDigit}${singleDigit}`;
-                    type = 'triple';
-                    price = 50; 
                 } else if (luck > 0.70) {
                     const d1 = Math.floor(Math.random() * 9) + 1;
                     const d2 = Math.floor(Math.random() * 10);
                     digits = `${d1}${d2}${d1}`;
-                    type = 'mirror';
-                    price = 15; 
                 } else {
                     digits = String(Math.floor(Math.random() * 900) + 100);
-                    type = 'common';
-                    price = 3;  
                 }
+            }
+
+            // Автоопределение типа и цены получившихся цифр для оценки стоимости продажи
+            if (digits[0] === digits[1] && digits[1] === digits[2]) {
+                type = 'triple';
+                price = 50;
+            } else if (digits[0] === digits[2]) {
+                type = 'mirror';
+                price = 15;
+            } else {
+                type = 'common';
+                price = 3;
             }
 
             selectedRegion = userRegion !== '' ? userRegion : getRandomElement(DEFAULT_REGIONS);
@@ -220,9 +220,12 @@ function sellPlate(id, price, type) {
             currentSpinCost = 15;
             ratingText.textContent = rating;
             spamLine.classList.add('danger');
-            spinButton.textContent = `Выбить за ${currentSpinCost}$`;
+            
+            // Обновляем текст цен на кнопках
+            document.getElementById('spinLettersBtn').textContent = `Купить буквы (${currentSpinCost}$)`;
+            document.getElementById('spinDigitsBtn').textContent = `Купить цифры (${currentSpinCost}$)`;
             navDropBtn.textContent = `Кейс (${currentSpinCost}$)`;
-            alert("⚠️ Внимание! Вы продали слишком много обычных номеров. Ваш авторитет упал, цена кейса теперь 15$!");
+            alert("⚠️ Внимание! Вы продали слишком много обычных номеров. Ваш авторитет упал, цена прокрутов теперь 15$!");
         }
         spamCountText.textContent = commonSoldCount;
     }
@@ -258,6 +261,11 @@ function renderHistory() {
     `).join('');
 }
 
-spinButton.addEventListener('click', generatePlate);
-acceptButton.addEventListener('click', acceptPlate);
-spinButton.textContent = `Выбить за ${currentSpinCost}$`;
+// Привязываем кнопки к новым режимам
+document.getElementById('spinLettersBtn').addEventListener('click', () => generatePlate('letters'));
+document.getElementById('spinDigitsBtn').addEventListener('click', () => generatePlate('digits'));
+document.getElementById('acceptButton').addEventListener('click', acceptPlate);
+
+// Стартовая инициализация текста цен на кнопках
+document.getElementById('spinLettersBtn').textContent = `Купить буквы (${currentSpinCost}$)`;
+document.getElementById('spinDigitsBtn').textContent = `Купить цифры (${currentSpinCost}$)`;
